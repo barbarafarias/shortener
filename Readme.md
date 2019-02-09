@@ -1,7 +1,10 @@
 # shortener
 
-## How to run
+### How to run
 
-docker build -t shorterner .
-docker run -p 3000:3000 <CONTAINER_ID>
+```sh
+$ git clone git@github.com:barbarafarias/shortener.git
+$ cd shortener
+$ docker-compose up
+```
 

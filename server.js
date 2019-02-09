@@ -1,5 +1,6 @@
 const express = require("express");
 const next = require('next')
+const api = require('./api')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -10,7 +11,11 @@ const PORT = 3000;
 app.prepare()
 .then(() => {
   const server = express()
-    
+
+  server.get('/api/short/:url', (req, res) => {
+    res.send(api.short(req.url))
+  })
+
   server.get('*', (req, res) => {
     return handle(req, res)
   })

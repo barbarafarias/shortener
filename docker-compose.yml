@@ -1,0 +1,19 @@
+version: "3"
+services:
+  app:
+    build: .
+    command: node server
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://shortenerapp:shortener@localhost/shortenerdb
+  postgres:
+    image: postgres:11.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: shortenerapp
+      POSTGRES_DATABASE: shortenerdb
+      POSTGRES_PASSWORD: shortener
