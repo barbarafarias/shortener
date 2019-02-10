@@ -15,8 +15,10 @@
     "express": "^4.16.4",
     "isomorphic-fetch": "^2.2.1",
     "next": "^7.0.2",
+    "pg": "^7.8.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "shortid": "^2.2.14",
     "styled-components": "^4.1.3"
   }
 }

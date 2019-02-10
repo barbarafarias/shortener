@@ -12,8 +12,9 @@ app.prepare()
 .then(() => {
   const server = express()
 
-  server.get('/api/short/:url', (req, res) => {
-    res.send(api.short(req.url))
+  server.get('/api/short/', async (req, res) => {
+    let shortenedUrl = await api.short(req.query.originalUrl);
+    res.send(shortenedUrl);
   })
 
   server.get('*', (req, res) => {

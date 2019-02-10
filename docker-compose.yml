@@ -1,8 +1,10 @@
 version: "3"
 services:
   app:
+    container_name: shortener-app
+    restart: always
     build: .
-    command: node server
+    command: yarn start
     depends_on:
       - postgres
     ports:
@@ -10,10 +12,15 @@ services:
     environment:
       DATABASE_URL: postgres://shortenerapp:shortener@localhost/shortenerdb
   postgres:
+    restart: always
+    container_name: postgres
     image: postgres:11.1-alpine
     ports:
       - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_USER: shortenerapp
       POSTGRES_DATABASE: shortenerdb
       POSTGRES_PASSWORD: shortener
+  
