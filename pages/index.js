@@ -82,14 +82,15 @@ export default class extends React.Component {
         let response = await fetch(`/api/short/?originalUrl=${this.state.originalUrl}`);
         if (response.status !== 200) {
             this.setState({
-                resultMessage: `Unable to create short URL: ${body.message}`
+                resultMessage: `Unable to create short URL.`
             })
+        } else {
+            let json = await response.json();
+            this.setState({
+                shortenedUrl: json.shortened_url,
+                resultMessage: 'Here is yout shortened url:'
+            });    
         }
-        let json = await response.json();
-        this.setState({
-            shortenedUrl: json.shortened_url,
-            resultMessage: 'Here is yout shortened url:'
-        });
     }
     
     render = () => {

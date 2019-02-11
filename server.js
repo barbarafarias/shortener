@@ -13,8 +13,12 @@ app.prepare()
   const server = express()
 
   server.get('/api/short/', async (req, res) => {
-    let shortenedUrl = await api.short(req.query.originalUrl);
-    res.send(shortenedUrl);
+      try {
+        let shortenedUrl = await api.short(req.query.originalUrl);
+        res.send(shortenedUrl);    
+      } catch(err) {
+        res.status(500).send({err});
+      }
   })
 
   server.get('*', (req, res) => {

@@ -10,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgres://shortenerapp:shortener@localhost/shortenerdb
+      DATABASE_URL: postgres://shortenerapp:shortener@postgres:5432/shortenerapp
   postgres:
     restart: always
     container_name: postgres

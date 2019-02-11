@@ -1,30 +1,31 @@
+const db = require('../db');
 const shortid = require('shortid');
-const { Pool } = require('pg');
 
-const connectionString = 'postgres://shortenerapp:shortener@localhost/shortenerapp'
+const getShortenedUrl = () => {
+    let hash = shortid.generate();
+    return `https://links.tillhub.de/${hash}`;
+}
 
 const short = async (originalUrl) => {
-    let pool = new Pool({
-        connectionString: connectionString,
-    });
-
-    let hash = shortid.generate();
-    let shortenedUrl = `https://links.tillhub.de/${hash}`;
     let data, res
     try {
-        res = await pool.query('SELECT * FROM urls WHERE ORIGINAL_URL = $1', [originalUrl]);
+        res = await db.getUrlByOriginalUrl(originalUrl);
         if (res.rowCount > 0) {
             data = res.rows[0];
         } else {
-            res = await pool.query('INSERT INTO urls(ORIGINAL_URL, SHORTENED_URL) VALUES($1, $2) RETURNING *', [originalUrl, shortenedUrl]); 
+            let shortenedUrl = getShortenedUrl();
+            res = await db.getUrlByShortenedUrl(shortenedUrl);
+            while (res.rowCount > 0) {
+                shortenedUrl = getShortenedUrl();
+                res = await db.getUrlByShortenedUrl(shortenedUrl);
+            }
+            res = await db.insertUrl(originalUrl, shortenedUrl);
             data = res.rows[0];    
         }
         
     } catch(err) {
         console.log(err)
         throw err;
-    } finally {
-        pool.end();
     }
     return data;
   }
